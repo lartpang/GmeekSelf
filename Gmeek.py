@@ -272,7 +272,7 @@ class GMEEK:
 
                 self.blogBase["prevUrl"] = "disabled"
                 if pageIndex + 1 < numPages:  # there is a next page
-                    self.blogBase["nextUrl"] = "/page2.html"
+                    self.blogBase["nextUrl"] = "/page1.html"
                 else:  # current page is the last page with a full list
                     self.blogBase["nextUrl"] = "disabled"
             else:
@@ -595,7 +595,7 @@ def update_readme_md(blog, commentNumSum, wordCount):
         f'- :hibiscus: {wordCount} {NEWLINE_CHAR}'
         f'- :alarm_clock: {datetime.datetime.now(blog.TZ).strftime("%Y-%m-%d %H:%M:%S")} {NEWLINE_CHAR}'
         f'---{NEWLINE_CHAR}'
-        '*Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek){NEWLINE_CHAR}*'
+        f'*Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek)*{NEWLINE_CHAR}'
     )
     with open(workspace_path + "/README.md", "w") as f:
         f.write(readme)
