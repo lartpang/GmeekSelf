@@ -159,83 +159,6 @@ class GMEEK:
 
         print(f'created postPage title={issue["postTitle"]} file={issue["htmlDir"]}')
 
-    def createPlistHtml(self):
-        # 由时间排序列表
-        self.blogBase["allPostInfo"] = dict(
-            sorted(
-                self.blogBase["allPostInfo"].items(),
-                key=lambda x: (x[1]["top"], x[1]["createdAt"]),
-                reverse=True,
-            )
-        )
-
-        plistIcon = {
-            k: ICONS[k]
-            for k in ["sun", "moon", "sync", "search", "rss", "upload", "post"]
-            + self.blogBase["subPageList"]
-        }
-        plistIcon.update(self.blogBase["iconList"])
-
-        tagIcon = {k: ICONS[k] for k in ["sun", "moon", "sync", "home", "search", "post"]}
-
-        allPostInfoList = list(self.blogBase["allPostInfo"].items())
-        numSparePosts = len(allPostInfoList)
-        pageIndex = 0
-        while True:
-            topNum = pageIndex * self.blogBase["maxNumOfPostPerPage"]
-            print(f"topNum={topNum} numSparePosts={numSparePosts}")
-
-            if numSparePosts <= self.blogBase["maxNumOfPostPerPage"]:
-                if pageIndex == 0:
-                    # the total number of posts is less than maxNumOfPostPerPage
-                    postsThisPage = dict(allPostInfoList[:numSparePosts])
-                    htmlDir = self.root_dir + "index.html"
-
-                    self.blogBase["prevUrl"] = "disabled"
-                    self.blogBase["nextUrl"] = "disabled"
-                else:  # the last page contains the rest of posts
-                    # the total number of posts is more than maxNumOfPostPerPage
-                    postsThisPage = dict(allPostInfoList[topNum:])
-                    htmlDir = self.root_dir + f"page{pageIndex+1}.html"
-
-                    if pageIndex == 1:
-                        self.blogBase["prevUrl"] = "/index.html"
-                    else:
-                        self.blogBase["prevUrl"] = f"/page{pageIndex}.html"
-                    self.blogBase["nextUrl"] = "disabled"
-
-                self.renderHtml("plist.html", self.blogBase, postsThisPage, htmlDir, plistIcon)
-                print("create " + htmlDir)
-                break
-            else:
-                if pageIndex == 0:
-                    # the total number of posts is more than maxNumOfPostPerPage
-                    htmlDir = self.root_dir + "index.html"
-
-                    self.blogBase["prevUrl"] = "disabled"
-                    self.blogBase["nextUrl"] = "/page2.html"
-                else:
-                    htmlDir = self.root_dir + f"page{pageIndex+1}.html"
-
-                    if pageIndex == 1:
-                        self.blogBase["prevUrl"] = "/index.html"
-                    else:
-                        self.blogBase["prevUrl"] = f"/page{pageIndex}.html"
-                    self.blogBase["nextUrl"] = f"/page{pageIndex+2}.html"
-
-                numSparePosts -= self.blogBase["maxNumOfPostPerPage"]
-                postsThisPage = dict(
-                    allPostInfoList[topNum : topNum + self.blogBase["maxNumOfPostPerPage"]]
-                )
-                self.renderHtml("plist.html", self.blogBase, postsThisPage, htmlDir, plistIcon)
-                print("create " + htmlDir)
-            pageIndex += 1
-
-        self.renderHtml(
-            "tag.html", self.blogBase, postsThisPage, self.root_dir + "tag.html", tagIcon
-        )
-        print("create tag.html")
-
     def createPostlistHtml(self):
         # 由时间排序列表
         self.blogBase["allPostInfo"] = OrderedDict(
@@ -263,7 +186,7 @@ class GMEEK:
         for pageIndex in range(numPages):
             startIndex = pageIndex * maxNumOfPostPerPage
             endIndex = (pageIndex + 1) * maxNumOfPostPerPage
-            postsThisPage = dict(allPostInfoList[startIndex:endIndex])
+            postsThisPage = OrderedDict(allPostInfoList[startIndex:endIndex])
             print(f"PostIndex={(startIndex, endIndex)} currNumPosts={len(postsThisPage)}")
 
             if pageIndex == 0:
