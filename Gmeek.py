@@ -263,7 +263,7 @@ class GMEEK:
         for pageIndex in range(numPages):
             startIndex = pageIndex * maxNumOfPostPerPage
             endIndex = (pageIndex + 1) * maxNumOfPostPerPage
-            postsThisPage = dict(allPostInfoList[startIndex, endIndex])
+            postsThisPage = dict(allPostInfoList[startIndex:endIndex])
             print(f"PostIndex={(startIndex, endIndex)} currNumPosts={len(postsThisPage)}")
 
             if pageIndex == 0:
