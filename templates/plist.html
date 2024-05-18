@@ -91,7 +91,7 @@
     <div class="listLabels">
         {% if allPostInfo[num]['commentNum']>0 %}<span class="Label" style="background-color:{{ blogBase['commentLabelColor'] }}">{{ allPostInfo[num]['commentNum'] }}</span>{% endif %}
         {% for label in allPostInfo[num]['labels'] -%}
-        <span class="Label LabelName" style="background-color:{{ blogBase['labelColorDict'][label] }}"><object><a style="color:#fff" href="tag.html#{{ label }}">{{ label }}</a></object></span>
+        <span class="Label LabelName" style="background-color:{{ blogBase['labelColorInfo'][label] }}"><object><a style="color:#fff" href="tag.html#{{ label }}">{{ label }}</a></object></span>
         {%- endfor %}
         <span class="Label LabelTime" style="background-color:{{ allPostInfo[num]['dateLabelColor'] }}">{{ allPostInfo[num]['createdDate'] }}</span>
     </div>
