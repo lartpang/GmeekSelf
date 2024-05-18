@@ -68,7 +68,7 @@ class GMEEK:
         }
 
         with open("config.json", "r", encoding="utf-8") as f:
-            user_cfg = json.loads(f)
+            user_cfg = json.load(f)
 
         # 加载用户自定义的html格式的脚本和样式
         if user_cfg["script"].endswith(".html"):
