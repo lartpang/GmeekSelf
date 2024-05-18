@@ -79,8 +79,8 @@ class GMEEK:
                 user_cfg["style"] = f.read() + NEWLINE_CHAR
 
         self.blogBase.update(user_cfg)
-        self.blogBase["allPostInfo"] = OrderedDict()  # 文章post页面信息
-        self.blogBase["subPageInfo"] = OrderedDict()  # 独立网页页面信息
+        self.blogBase["allPostInfo"] = OrderedDict()  # 文章post页面信息 postListJson
+        self.blogBase["subPageInfo"] = OrderedDict()  # 独立网页页面信息 singeListJson
         self.blogBase["labelColorInfo"] = self.labelColorInfo
         self.blogBase.setdefault("displayTitle", self.blogBase["title"])
         self.blogBase.setdefault("faviconUrl", self.blogBase["avatarUrl"])
@@ -114,6 +114,7 @@ class GMEEK:
         file_loader = FileSystemLoader("templates")
         env = Environment(loader=file_loader)
         template = env.get_template(template)
+
         output = template.render(
             blogBase=blogBase, allPostInfo=allPostInfo, i18n=self.i18n, IconList=icon
         )
