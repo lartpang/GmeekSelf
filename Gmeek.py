@@ -475,7 +475,7 @@ class GMEEK:
                 "This is a simple static self based on GitHub Issue and Page.",
                 "| :alarm_clock: Late updated                            | :page_facing_up: Articles                                                | :speech_balloon: Comments | :hibiscus: Words |",
                 "| ----------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------- | ---------------- |",
-                f"|{datetime.now(self.TZ).strftime("%Y-%m-%d %H:%M:%S")} | [{len(self.blogBase["posts"]) - 1}]({self.blogBase["homeUrl"]}/tag.html) | {num_comments}            | {num_words}      |",
+                f"|{datetime.now(self.TZ).strftime('%Y-%m-%d %H:%M:%S')} | [{len(self.blogBase['posts']) - 1}]({self.blogBase['homeUrl']}/tag.html) | {num_comments}            | {num_words}      |",
                 "---",
                 "*Powered by [GmeekSelf](https://github.com/lartpang/GmeekSelf) modified from [Gmeek](https://github.com/Meekdai/Gmeek)*",
             ]
