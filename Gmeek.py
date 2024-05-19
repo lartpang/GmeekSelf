@@ -334,17 +334,17 @@ class GMEEK:
         # Parse and import the customized settings from the specific comment of the post body
         # format: <!-- myconfig:{key1:value1,key2:value2,...} -->
         print("Parse and import customized settings...")
-        post_cfg = {}
+        custom_post_cfg = {}
         for cfg in re.findall(r"<!--\s*myconfig:{([^}]*?)}\s*-->", issue.body, flags=re.MULTILINE):
-            post_cfg.update(json.loads(cfg))
-        print("Customized settings: ", post_cfg)
+            custom_post_cfg.update(json.loads(cfg))
+        print("Customized settings: ", custom_post_cfg)
 
-        post_cfg["createdAt"] = post_cfg.get(
+        post_cfg["createdAt"] = custom_post_cfg.get(
             "timestamp", int(time.mktime(issue.created_at.timetuple()))
         )
-        post_cfg["style"] = self.blogBase["style"] + post_cfg.get("style", "")
-        post_cfg["script"] = self.blogBase["script"] + post_cfg.get("script", "")
-        post_cfg["ogImage"] = post_cfg.get("ogImage", self.blogBase["ogImage"])
+        post_cfg["style"] = self.blogBase["style"] + custom_post_cfg.get("style", "")
+        post_cfg["script"] = self.blogBase["script"] + custom_post_cfg.get("script", "")
+        post_cfg["ogImage"] = custom_post_cfg.get("ogImage", self.blogBase["ogImage"])
 
         thisTime = datetime.fromtimestamp(post_cfg["createdAt"]).astimezone(self.TZ)
         thisYear = thisTime.year
