@@ -297,9 +297,6 @@ class GMEEK:
         Returns:
             str: "sub_pages" or "posts".
         """
-        if len(issue.labels) < 1:
-            return
-
         # TODO: 这里只考虑了标签列表中的第一个标签
         if issue.labels[0].name in self.blogBase["sub_page_labels"]:
             post_type = "sub_pages"
@@ -364,8 +361,7 @@ class GMEEK:
         return post_type, post_cfg
 
     def update_all_posts(self):
-        """Remove all old files and rebuild all html"""
-        print("====== start create static html ======")
+        print("====== start create all posts html ======")
 
         workspace_path = os.environ.get("GITHUB_WORKSPACE")
         if os.path.exists(workspace_path + "/" + self.backup_dir):
@@ -382,25 +378,31 @@ class GMEEK:
 
         # Only use the open issues
         for issue in self.repo.get_issues(state="open"):
+            if len(issue.labels) < 1:
+                continue
+
             post_type, post_cfg = self.update_post_info(issue)
             self.blogBase[post_type][f"P{issue.number}"] = post_cfg
             self.create_post_html(post_cfg)
 
         self.create_post_index_html()
         self.create_feed_xml()
-        print("====== create static html end ======")
+        print("====== create all posts html end ======")
 
     def update_single_post(self, number: str):
-        print("====== start create static html ======")
+        print("====== start create single post html ======")
 
         issue = self.repo.get_issue(int(number))
+        if len(issue.labels) < 1:
+            return
+
         post_type, post_cfg = self.update_post_info(issue)
         self.blogBase[post_type][f"P{number}"] = post_cfg
         self.create_post_html(post_cfg)
 
         self.create_post_index_html()
         self.create_feed_xml()
-        print("====== create static html end ======")
+        print("====== create single post html end ======")
 
     def update_blog_base(self):
         if not os.path.exists("blogBase.json"):
