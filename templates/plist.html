@@ -58,10 +58,10 @@
         </svg>
     </a>
     {%- endfor %}
-    {% for num in blogBase['subPageInfo'] -%}
-    <a href="{{ blogBase['homeUrl'] }}/{{ blogBase['subPageInfo'][num]['labels'][0] }}.html" class="btn btn-invisible circle" title="{{ blogBase['subPageInfo'][num]['postTitle'] }}">
+    {% for num in blogBase['sub_pages'] -%}
+    <a href="{{ blogBase['homeUrl'] }}/{{ blogBase['sub_pages'][num]['labels'][0] }}.html" class="btn btn-invisible circle" title="{{ blogBase['sub_pages'][num]['postTitle'] }}">
         <svg class="octicon" width="16" height="16" >
-            <path id="{{ blogBase['subPageInfo'][num]['postTitle'] }}" fill-rule="evenodd"></path>
+            <path id="{{ blogBase['sub_pages'][num]['postTitle'] }}" fill-rule="evenodd"></path>
         </svg>
     </a>
     {%- endfor %}
@@ -81,19 +81,19 @@
 {% block content %}
 <div style="margin-bottom: 16px;">{{ blogBase['subTitle'] }}</div>
 <nav class="SideNav border">
-{% for num in allPostInfo -%}
-<a class="SideNav-item d-flex flex-items-center flex-justify-between" href="{{ allPostInfo[num]['postUrl']|e }}">
+{% for num in posts -%}
+<a class="SideNav-item d-flex flex-items-center flex-justify-between" href="{{ posts[num]['postUrl']|e }}">
     <div class="d-flex flex-items-center">
-        <svg class="SideNav-icon octicon" style="witdh:16px;height:16px"><path class="svgTop{{ allPostInfo[num]['top'] }}" d=""></path>
+        <svg class="SideNav-icon octicon" style="witdh:16px;height:16px"><path class="svgTop{{ posts[num]['top'] }}" d=""></path>
         </svg>
-        <span class="listTitle">{{ allPostInfo[num]['postTitle']|e }}</span>
+        <span class="listTitle">{{ posts[num]['postTitle']|e }}</span>
     </div>
     <div class="listLabels">
-        {% if allPostInfo[num]['commentNum']>0 %}<span class="Label" style="background-color:{{ blogBase['commentLabelColor'] }}">{{ allPostInfo[num]['commentNum'] }}</span>{% endif %}
-        {% for label in allPostInfo[num]['labels'] -%}
+        {% if posts[num]['commentNum']>0 %}<span class="Label" style="background-color:{{ blogBase['commentLabelColor'] }}">{{ posts[num]['commentNum'] }}</span>{% endif %}
+        {% for label in posts[num]['labels'] -%}
         <span class="Label LabelName" style="background-color:{{ blogBase['labelColorInfo'][label] }}"><object><a style="color:#fff" href="tag.html#{{ label }}">{{ label }}</a></object></span>
         {%- endfor %}
-        <span class="Label LabelTime" style="background-color:{{ allPostInfo[num]['dateLabelColor'] }}">{{ allPostInfo[num]['createdDate'] }}</span>
+        <span class="Label LabelTime" style="background-color:{{ posts[num]['dateLabelColor'] }}">{{ posts[num]['createdDate'] }}</span>
     </div>
 </a>
 {%- endfor %}
@@ -136,8 +136,8 @@ for(var i=0;i<iconPost.length;i++){
 document.getElementById("{{ key }}").setAttribute("d",value=IconList["{{ key }}"]);
 {%- endfor %}
 
-{% for num in blogBase['subPageInfo'] -%}
-document.getElementById("{{ blogBase['subPageInfo'][num]['postTitle'] }}").setAttribute("d",value=IconList["{{ blogBase['subPageInfo'][num]['labels'][0] }}"]);
+{% for num in blogBase['sub_pages'] -%}
+document.getElementById("{{ blogBase['sub_pages'][num]['postTitle'] }}").setAttribute("d",value=IconList["{{ blogBase['sub_pages'][num]['labels'][0] }}"]);
 {%- endfor %}
 </script>
 {% endblock %}
