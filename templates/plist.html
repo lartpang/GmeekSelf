@@ -51,7 +51,7 @@
             <path id="pathSearch" fill-rule="evenodd"></path>
         </svg>
     </a>
-    {% for key, value in blogBase['exlink'].items() -%}
+    {% for key, value in blogBase['extra_links'].items() -%}
     <a href="{{ value }}" class="btn btn-invisible circle" title="{{ key }}" target="_blank">
         <svg class="octicon" width="16" height="16" >
             <path id="{{ key }}" fill-rule="evenodd"></path>
@@ -70,7 +70,7 @@
             <path id="pathRSS" fill-rule="evenodd"></path>
         </svg>
     </a>
-    <a class="btn btn-invisible circle" onclick="modeSwitch()" title="{{ i18n['switchTheme'] }}" {%- if blogBase['themeMode']=='fix' -%}style="display:none;"{%- endif -%}>
+    <a class="btn btn-invisible circle" onclick="modeSwitch()" title="{{ i18n['switchTheme'] }}" {%- if blogBase['theme_mode']=='fix' -%}style="display:none;"{%- endif -%}>
         <svg class="octicon" width="16" height="16" >
             <path id="themeSwitch" fill-rule="evenodd"></path>
         </svg>
@@ -89,9 +89,9 @@
         <span class="listTitle">{{ posts[num]['postTitle']|e }}</span>
     </div>
     <div class="listLabels">
-        {% if posts[num]['commentNum']>0 %}<span class="Label" style="background-color:{{ blogBase['commentLabelColor'] }}">{{ posts[num]['commentNum'] }}</span>{% endif %}
+        {% if posts[num]['commentNum']>0 %}<span class="Label" style="background-color:{{ blogBase['comment_label_color'] }}">{{ posts[num]['commentNum'] }}</span>{% endif %}
         {% for label in posts[num]['labels'] -%}
-        <span class="Label LabelName" style="background-color:{{ blogBase['labelColorInfo'][label] }}"><object><a style="color:#fff" href="tag.html#{{ label }}">{{ label }}</a></object></span>
+        <span class="Label LabelName" style="background-color:{{ blogBase['label_color_info'][label] }}"><object><a style="color:#fff" href="tag.html#{{ label }}">{{ label }}</a></object></span>
         {%- endfor %}
         <span class="Label LabelTime" style="background-color:{{ posts[num]['dateLabelColor'] }}">{{ posts[num]['createdDate'] }}</span>
     </div>
@@ -132,7 +132,7 @@ for(var i=0;i<iconPost.length;i++){
     iconPost[i].setAttribute("d",IconList["post"]);
 }
 
-{% for key, value in blogBase['exlink'].items() %}
+{% for key, value in blogBase['extra_links'].items() %}
 document.getElementById("{{ key }}").setAttribute("d",value=IconList["{{ key }}"]);
 {%- endfor %}
 

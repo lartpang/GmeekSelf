@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html data-color-mode="light" data-dark-theme="{{ blogBase['nightTheme'] }}" data-light-theme="{{ blogBase['dayTheme'] }}" lang={% if blogBase['i18n']=='CN' %}"zh-CN"{% elif blogBase['i18n']=='RU' %}"ru"{% else -%}"en"{%- endif -%}>
+<html data-color-mode="light" data-dark-theme="{{ blogBase['night_theme'] }}" data-light-theme="{{ blogBase['day_theme'] }}" lang={% if blogBase['i18n']=='CN' %}"zh-CN"{% elif blogBase['i18n']=='RU' %}"ru"{% else -%}"en"{%- endif -%}>
 <head>
     <meta content="text/html; charset=utf-8" http-equiv="content-type" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
     <link rel="icon" href="{{ blogBase['faviconUrl'] }}">
-    {%- if blogBase['themeMode']=='manual' -%}
+    {%- if blogBase['theme_mode']=='manual' -%}
     <script>
         let theme = localStorage.getItem("meek_theme") || "light";
         document.documentElement.setAttribute("data-color-mode", theme);
@@ -30,7 +30,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <script>
 var IconList={{ IconList }};
 var utterancesLoad=0;
-{% if blogBase['themeMode']=='manual' %}
+{% if blogBase['theme_mode']=='manual' %}
 let themeSettings={
     "dark": ["dark","moon","#00f0ff","dark-blue"],
     "light": ["light","sun","#ff5000","github-light"],

@@ -46,24 +46,24 @@ class GMEEK:
     def initialize_config(self):
         self.blogBase = {
             "sub_page_labels": [],  # For the single page with a unique label. e.g. "about, link"
-            "startSite": "",
+            "start_site": "",
             "filingNum": "",
             "max_posts_per_page": 15,
-            "commentLabelColor": "#006b75",
-            "yearColors": ["#bc4c00", "#0969da", "#1f883d", "#A333D0"],
+            "comment_label_color": "#006b75",
+            "year_colors": ["#bc4c00", "#0969da", "#1f883d", "#A333D0"],
             "i18n": "CN",
-            "themeMode": "manual",
-            "dayTheme": "light",
-            "nightTheme": "dark",
-            "urlMode": "pinyin",
+            "theme_mode": "manual",
+            "day_theme": "light",
+            "night_theme": "dark",
+            "url_mode": "pinyin",
             "script": "",
             "style": "",
             "bottomText": "",
-            "showPostSource": 1,
-            "iconList": {},
+            "show_source": 1,
+            "icons": {},
             "UTC": +8,
-            "rssSplit": "sentence",
-            "exlink": {},
+            "rss_split": "sentence",
+            "extra_links": {},
             # should not be overrode
             "posts": OrderedDict(),  # 文章post页面信息 postListJson
             "sub_pages": OrderedDict(),  # 独立网页页面信息 singeListJson
@@ -178,7 +178,7 @@ class GMEEK:
             for k in ["sun", "moon", "sync", "search", "rss", "upload", "post"]
             + self.blogBase["sub_page_labels"]
         }
-        index_icons.update(self.blogBase["iconList"])
+        index_icons.update(self.blogBase["icons"])
 
         # all_post_infos = list(self.blogBase["posts"].items())
         all_post_infos = sorted(
@@ -282,9 +282,9 @@ class GMEEK:
         if useLabel:
             fileName = issue.labels[0].name
         else:
-            if self.blogBase["urlMode"] == "issue":
+            if self.blogBase["url_mode"] == "issue":
                 fileName = str(issue.number)
-            elif self.blogBase["urlMode"] == "ru_translit":
+            elif self.blogBase["url_mode"] == "ru_translit":
                 fileName = translit(issue.title, language_code="ru", reversed=True)
                 fileName = str(fileName).replace(" ", "-")
             else:
@@ -349,8 +349,8 @@ class GMEEK:
         thisTime = datetime.fromtimestamp(post_cfg["createdAt"]).astimezone(self.TZ)
         thisYear = thisTime.year
         post_cfg["createdDate"] = thisTime.strftime("%Y-%m-%d")
-        post_cfg["dateLabelColor"] = self.blogBase["yearColors"][
-            int(thisYear) % len(self.blogBase["yearColors"])
+        post_cfg["dateLabelColor"] = self.blogBase["year_colors"][
+            int(thisYear) % len(self.blogBase["year_colors"])
         ]
 
         md_name = re.sub(r"[<>:/\\|?*\"]|[\0-\31]", "-", issue.title)
