@@ -58,7 +58,7 @@ class GMEEK:
             "url_mode": "pinyin",
             "script": "",
             "style": "",
-            "bottomText": "",
+            "bottom_text": "",
             "show_source": 1,
             "icons": {},
             "UTC": +8,
@@ -82,17 +82,17 @@ class GMEEK:
 
         self.blogBase.update(user_cfg)
         self.blogBase.setdefault("displayTitle", self.blogBase["title"])
-        self.blogBase.setdefault("faviconUrl", self.blogBase["avatarUrl"])
-        self.blogBase.setdefault("ogImage", self.blogBase["avatarUrl"])
+        self.blogBase.setdefault("faviconUrl", self.blogBase["avatar_url"])
+        self.blogBase.setdefault("og_image", self.blogBase["avatar_url"])
 
-        if "homeUrl" not in self.blogBase:
+        if "home_url" not in self.blogBase:
             user_github_io = f"{self.repo.owner.login}.github.io"
 
-            self.blogBase["homeUrl"] = f"https://{user_github_io}"
+            self.blogBase["home_url"] = f"https://{user_github_io}"
             if f"{self.repo.name}".lower() != user_github_io.lower():
                 # 非user.github.io仓库
-                self.blogBase["homeUrl"] += f"/{self.repo.name}"
-        print("GitHub Pages URL: ", self.blogBase["homeUrl"])
+                self.blogBase["home_url"] += f"/{self.repo.name}"
+        print("GitHub Pages URL: ", self.blogBase["home_url"])
 
         self.i18n = I18N.get(self.blogBase["i18n"], "EN")
         self.TZ = timezone(timedelta(hours=self.blogBase["UTC"]))
@@ -150,27 +150,27 @@ class GMEEK:
                 ]
             )
 
-        assert "postTitle" in post_cfg, post_cfg.keys()
+        assert "post_title" in post_cfg, post_cfg.keys()
         post_info = copy.deepcopy(self.blogBase)
-        post_info["postTitle"] = post_cfg["postTitle"]
-        post_info["postUrl"] = self.blogBase["homeUrl"] + "/" + post_cfg["postUrl"]
+        post_info["post_title"] = post_cfg["post_title"]
+        post_info["post_url"] = self.blogBase["home_url"] + "/" + post_cfg["post_url"]
         post_info["description"] = post_cfg["description"]
-        post_info["ogImage"] = post_cfg["ogImage"]
-        post_info["postBody"] = post_body
-        post_info["commentNum"] = post_cfg["commentNum"]
+        post_info["og_image"] = post_cfg["og_image"]
+        post_info["post_body"] = post_body
+        post_info["num_comments"] = post_cfg["num_comments"]
         post_info["style"] = post_cfg["style"]
         post_info["script"] = post_cfg["script"]
         post_info["top"] = post_cfg["top"]
-        post_info["postSourceUrl"] = post_cfg["postSourceUrl"]
-        post_info["repoName"] = self.repo_name
+        post_info["post_source_url"] = post_cfg["post_source_url"]
+        post_info["repo_name"] = self.repo_name
         post_info["highlight"] = int("highlight" in post_body)
 
         if post_cfg["labels"][0] in self.blogBase["sub_page_labels"]:
-            post_info["bottomText"] = ""
+            post_info["bottom_text"] = ""
 
         post_icons = {k: ICONS[k] for k in ["sun", "moon", "sync", "home", "github"]}
-        self.render_html("post.html", post_info, post_icons, post_cfg["htmlDir"])
-        print(f'created post html {post_cfg["htmlDir"]} from {post_cfg["postTitle"]}')
+        self.render_html("post.html", post_info, post_icons, post_cfg["html_dir"])
+        print(f'created post html {post_cfg["html_dir"]} from {post_cfg["post_title"]}')
 
     def create_post_index_html(self):
         index_icons = {
@@ -183,7 +183,7 @@ class GMEEK:
         # all_post_infos = list(self.blogBase["posts"].items())
         all_post_infos = sorted(
             self.blogBase["posts"].items(),
-            key=lambda x: (x[1]["top"], x[1]["createdAt"]),
+            key=lambda x: (x[1]["top"], x[1]["created_time"]),
             reverse=True,
         )
         max_posts_per_page = self.blogBase["max_posts_per_page"]
@@ -222,9 +222,9 @@ class GMEEK:
     def create_feed_xml(self):
         feed = FeedGenerator()
         feed.title(self.blogBase["title"])
-        feed.description(self.blogBase["subTitle"])
-        feed.link(href=self.blogBase["homeUrl"])
-        feed.image(url=self.blogBase["avatarUrl"], title="avatar", link=self.blogBase["homeUrl"])
+        feed.description(self.blogBase["sub_title"])
+        feed.link(href=self.blogBase["home_url"])
+        feed.image(url=self.blogBase["avatar_url"], title="avatar", link=self.blogBase["home_url"])
         feed.copyright(self.blogBase["title"])
         feed.managingEditor(self.blogBase["title"])
         feed.webMaster(self.blogBase["title"])
@@ -233,31 +233,33 @@ class GMEEK:
         for num in self.blogBase["sub_pages"]:
             item = feed.add_item()
             item.guid(
-                self.blogBase["homeUrl"] + "/" + self.blogBase["sub_pages"][num]["postUrl"],
+                self.blogBase["home_url"] + "/" + self.blogBase["sub_pages"][num]["post_url"],
                 permalink=True,
             )
-            item.title(self.blogBase["sub_pages"][num]["postTitle"])
+            item.title(self.blogBase["sub_pages"][num]["post_title"])
             item.description(self.blogBase["sub_pages"][num]["description"])
             item.link(
-                href=self.blogBase["homeUrl"] + "/" + self.blogBase["sub_pages"][num]["postUrl"]
+                href=self.blogBase["home_url"] + "/" + self.blogBase["sub_pages"][num]["post_url"]
             )
             item.pubDate(
                 time.strftime(
                     "%a, %d %b %Y %H:%M:%S +0000",
-                    time.gmtime(self.blogBase["sub_pages"][num]["createdAt"]),
+                    time.gmtime(self.blogBase["sub_pages"][num]["created_time"]),
                 )
             )
 
         for post_info in sorted(
-            self.blogBase["posts"].values(), key=lambda x: x["createdAt"], reverse=False
+            self.blogBase["posts"].values(), key=lambda x: x["created_time"], reverse=False
         ):
             item = feed.add_item()
-            item.guid(self.blogBase["homeUrl"] + "/" + post_info["postUrl"], permalink=True)
-            item.title(post_info["postTitle"])
+            item.guid(self.blogBase["home_url"] + "/" + post_info["post_url"], permalink=True)
+            item.title(post_info["post_title"])
             item.description(post_info["description"])
-            item.link(href=self.blogBase["homeUrl"] + "/" + post_info["postUrl"])
+            item.link(href=self.blogBase["home_url"] + "/" + post_info["post_url"])
             item.pubDate(
-                time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime(post_info["createdAt"]))
+                time.strftime(
+                    "%a, %d %b %Y %H:%M:%S +0000", time.gmtime(post_info["created_time"])
+                )
             )
 
         if self.old_feed_string != "":
@@ -311,15 +313,15 @@ class GMEEK:
             html_path = self.post_dir + f"{html_name}.html"
 
         post_cfg = {}
-        post_cfg["htmlDir"] = html_path
+        post_cfg["html_dir"] = html_path
         post_cfg["labels"] = [label.name for label in issue.labels]
         # post_cfg["labelColor"]=self.label_color_info[issue.labels[0].name]
-        post_cfg["postTitle"] = issue.title
-        post_cfg["postUrl"] = urllib.parse.quote(html_path[len(self.root_dir) :])
-        post_cfg["postSourceUrl"] = (
+        post_cfg["post_title"] = issue.title
+        post_cfg["post_url"] = urllib.parse.quote(html_path[len(self.root_dir) :])
+        post_cfg["post_source_url"] = (
             "https://github.com/" + self.repo_name + "/issues/" + str(issue.number)
         )
-        post_cfg["commentNum"] = issue.get_comments().totalCount
+        post_cfg["num_comments"] = issue.get_comments().totalCount
 
         post_cfg["top"] = 0
         for event in issue.get_events():
@@ -339,16 +341,16 @@ class GMEEK:
             custom_post_cfg.update(json.loads(cfg))
         print("Customized settings: ", custom_post_cfg)
 
-        post_cfg["createdAt"] = custom_post_cfg.get(
+        post_cfg["created_time"] = custom_post_cfg.get(
             "timestamp", int(time.mktime(issue.created_at.timetuple()))
         )
         post_cfg["style"] = self.blogBase["style"] + custom_post_cfg.get("style", "")
         post_cfg["script"] = self.blogBase["script"] + custom_post_cfg.get("script", "")
-        post_cfg["ogImage"] = custom_post_cfg.get("ogImage", self.blogBase["ogImage"])
+        post_cfg["og_image"] = custom_post_cfg.get("og_image", self.blogBase["og_image"])
 
-        thisTime = datetime.fromtimestamp(post_cfg["createdAt"]).astimezone(self.TZ)
+        thisTime = datetime.fromtimestamp(post_cfg["created_time"]).astimezone(self.TZ)
         thisYear = thisTime.year
-        post_cfg["createdDate"] = thisTime.strftime("%Y-%m-%d")
+        post_cfg["created_date"] = thisTime.strftime("%Y-%m-%d")
         post_cfg["dateLabelColor"] = self.blogBase["year_colors"][
             int(thisYear) % len(self.blogBase["year_colors"])
         ]
@@ -436,29 +438,31 @@ class GMEEK:
         print("====== create postList.json file ======")
 
         sorted_post_infos = OrderedDict(
-            sorted(self.blogBase["posts"].items(), key=lambda x: x[1]["createdAt"], reverse=True)
+            sorted(
+                self.blogBase["posts"].items(), key=lambda x: x[1]["created_time"], reverse=True
+            )
         )
 
         num_comments = 0
         num_words = 0
         useless_keys = [
             "description",
-            "postSourceUrl",
-            "htmlDir",
-            "createdAt",
+            "post_source_url",
+            "html_dir",
+            "created_time",
             "script",
             "style",
             "top",
-            "ogImage",
+            "og_image",
         ]
         for i in sorted_post_infos:
             for k in useless_keys:
                 if k in sorted_post_infos[i]:
                     del sorted_post_infos[i][k]
 
-            if "commentNum" in sorted_post_infos[i]:
-                num_comments = num_comments + sorted_post_infos[i]["commentNum"]
-                del sorted_post_infos[i]["commentNum"]
+            if "num_comments" in sorted_post_infos[i]:
+                num_comments = num_comments + sorted_post_infos[i]["num_comments"]
+                del sorted_post_infos[i]["num_comments"]
 
             if "num_words" in sorted_post_infos[i]:
                 num_words = num_words + sorted_post_infos[i]["num_words"]
@@ -476,11 +480,11 @@ class GMEEK:
 
         readme = NEWLINE_CHAR.join(
             [
-                f'# {self.blogBase["title"]} :link: {self.blogBase["homeUrl"]}',
+                f'# {self.blogBase["title"]} :link: {self.blogBase["home_url"]}',
                 "This is a simple static self based on GitHub Issue and Page.",
                 "| :alarm_clock: Late updated                            | :page_facing_up: Articles                                                | :speech_balloon: Comments | :hibiscus: Words |",
                 "| ----------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------- | ---------------- |",
-                f"|{datetime.now(self.TZ).strftime('%Y-%m-%d %H:%M:%S')} | [{len(self.blogBase['posts']) - 1}]({self.blogBase['homeUrl']}/tag.html) | {num_comments}            | {num_words}      |",
+                f"|{datetime.now(self.TZ).strftime('%Y-%m-%d %H:%M:%S')} | [{len(self.blogBase['posts']) - 1}]({self.blogBase['home_url']}/tag.html) | {num_comments}            | {num_words}      |",
                 "---",
                 "*Powered by [GmeekSelf](https://github.com/lartpang/GmeekSelf) modified from [Gmeek](https://github.com/Meekdai/Gmeek)*",
             ]

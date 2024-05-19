@@ -42,7 +42,7 @@
             <path id="searchSVG" fill-rule="evenodd"></path>
         </svg>
     </div>
-    <a href="{{ blogBase['homeUrl'] }}" id="buttonHome" class="btn btn-invisible circle" title="{{ i18n['home'] }}">
+    <a href="{{ blogBase['home_url'] }}" id="buttonHome" class="btn btn-invisible circle" title="{{ i18n['home'] }}">
         <svg class="octicon" width="16" height="16">
             <path id="pathHome" fill-rule="evenodd"></path>
         </svg>
@@ -119,7 +119,7 @@ function showList(labelsCount){
             div.setAttribute("class","lists "+jsonData[i]['labels'].join(" "));
             let item=document.createElement("a");
             item.setAttribute("class","SideNav-item d-flex flex-items-center flex-justify-between");
-            item.setAttribute("href",jsonData[i]['postUrl']);
+            item.setAttribute("href",jsonData[i]['post_url']);
 
             let center=document.createElement("div");
             center.setAttribute("class","d-flex flex-items-center");
@@ -134,7 +134,7 @@ function showList(labelsCount){
 
             let title=document.createElement("span");
             title.setAttribute("class","listTitle");
-            title.innerHTML=jsonData[i]['postTitle'];
+            title.innerHTML=jsonData[i]['post_title'];
             center.appendChild(svg);
             center.appendChild(title);
 
@@ -151,7 +151,7 @@ function showList(labelsCount){
             let LabelTime=document.createElement("span");
             LabelTime.setAttribute("class","Label LabelTime");
             LabelTime.setAttribute("style","background-color:"+jsonData[i]['dateLabelColor']);
-            LabelTime.innerHTML=jsonData[i]['createdDate'];
+            LabelTime.innerHTML=jsonData[i]['created_date'];
             listLabels.appendChild(LabelTime);
 
             item.appendChild(center);
