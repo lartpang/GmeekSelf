@@ -22,6 +22,8 @@ from xpinyin import Pinyin
 
 from constant import I18N, ICONS, NEWLINE_CHAR
 
+__VERSION__ = "1.0.0"
+
 
 class GMEEK:
     def __init__(self, github_token, repo_name, issue_number):
@@ -148,6 +150,7 @@ class GMEEK:
                 ]
             )
 
+        assert "postTitle" in post_cfg, post_cfg.keys()
         post_info = copy.deepcopy(self.blogBase)
         post_info["postTitle"] = post_cfg["postTitle"]
         post_info["postUrl"] = self.blogBase["homeUrl"] + "/" + post_cfg["postUrl"]
@@ -487,6 +490,8 @@ class GMEEK:
 
 
 def main():
+    print(f"VERSION of GmeekSelf: {__VERSION__}")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("github_token", help="github_token")
     parser.add_argument("repo_name", help="repo_name")
