@@ -504,7 +504,7 @@ def main():
 
     blog = GMEEK(args.github_token, args.repo_name, args.issue_number)
     blog.update_blog_base()
-    num_comments, num_words = blog.update_post_list_json(blog)
+    num_comments, num_words = blog.update_post_list_json()
     if os.environ.get("GITHUB_EVENT_NAME") != "schedule":
         blog.update_readme_md(num_comments, num_words)
 
