@@ -15,10 +15,34 @@
     {% block head %}{% endblock %}
 </head>
 <style>
-body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
-#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
-#footer {margin-top:64px; text-align: center;font-size: small;}
-
+    body {
+      box-sizing: border-box;
+      min-width: 200px;
+      padding: 15px 50px; /* 上边下边 | 左边右边 */
+      font-size: 16px;
+      font-family: sans-serif;
+      line-height: 1.25;
+    }
+    #header {
+      display: flex;
+      justify-content: center; /* 水平居中 */
+      align-items: center; /* 垂直居中 */
+      padding: 0px 30px 10px; /* 上边 | 左边右边 | 下边 */
+      margin: 0px auto; /* 上边下边 | 左边右边 */
+      border-bottom: 1px solid
+        var(--borderColor-muted, var(--color-border-muted));
+      width: 100%; /* 宽度设为100% */
+    }
+    #content {
+      max-width: 900px; /* 限制内容的最大宽度 */
+      margin: 10px auto; /* 水平居中 */
+      padding: 0 25px;
+    }
+    #footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: small;
+    }
 </style>
 {% block style %}{% endblock %}
 
